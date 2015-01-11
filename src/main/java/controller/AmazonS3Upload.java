@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.auth.*;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
@@ -16,11 +16,11 @@ import com.amazonaws.services.s3.model.*;
  */
 public class AmazonS3Upload {
     
-    public static void UploadFile(String path) throws IOException {
+    public static void UploadFile(String path, String filename) throws IOException {
 	String accessKey = "AKIAJABVGQAXBGM76INQ";
 	String secretKey = "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";
         String existingBucketName  = "sandboxoriginal"; 
-        String keyName             = "teste.png";
+        String keyName             = filename;
         String filePath            = path;
 	AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
         
