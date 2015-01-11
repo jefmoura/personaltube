@@ -14,15 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 public class ServletMediaPlayer extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        //request.getRequestDispatcher("index.jsp" ).forward(request, response);
     }
 
     @Override
