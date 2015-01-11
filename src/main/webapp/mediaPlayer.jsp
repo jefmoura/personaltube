@@ -9,9 +9,22 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Tocador de Video</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <table>
+            <tr>
+                <td>
+                    <form method="post" action="servletmediaplayer.do">
+                        <input type="submit" value="Back" />
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <embed src=${pathVideo} type="application/x-mplayer2" pluginspage="http://www.microsoft.com/Windows/MediaPlayer/" name="mediaplayer1" ShowStatusBar="true" EnableContextMenu="false" width="700" height="500" autostart="false" loop="false" align="middle" volume="60" >
+                </td>
+            </tr>
+        </table>
     </body>
 </html>
