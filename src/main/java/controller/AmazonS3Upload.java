@@ -1,79 +1,59 @@
 package controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.amazonaws.auth.*;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.AmazonClientException;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  *
  * @author jeferson
  */
 public class AmazonS3Upload {
-    
-    public static void UploadFile(String path, String filename) throws IOException {
-	String accessKey = "AKIAJABVGQAXBGM76INQ";
-	String secretKey = "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";
-        String existingBucketName  = "sandboxoriginal"; 
-        String keyName             = filename;
-        String filePath            = path;
-	AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-        
-        AmazonS3 s3Client = new AmazonS3Client(credentials);        
 
-        // Create a list of UploadPartResponse objects. You get one of these
-        // for each part upload.
-        List<PartETag> partETags = new ArrayList<PartETag>();
+    private static final String AMAZON_ACCESS_KEY = "ACCESS_KEY";
+    private static final String AMAZON_SECRET_KEY = "SECRET_KEY";
+    private static final String S3_BUCKET_NAME = "BUCKET_NAME";
 
-        // Step 1: Initialize.
-        InitiateMultipartUploadRequest initRequest = new 
-             InitiateMultipartUploadRequest(existingBucketName, keyName);
-        InitiateMultipartUploadResult initResponse = 
-        	                   s3Client.initiateMultipartUpload(initRequest);
+    private static final Logger LOGGER = LogManager.getLogger(AmazonS3Upload.class);
 
-        File file = new File(filePath);
-        long contentLength = file.length();
-        long partSize = 5242880; // Set part size to 5 MB.
+    public AmazonS3Upload() {
+        super();
+    }
 
-        try {
-            // Step 2: Upload parts.
-            long filePosition = 0;
-            for (int i = 1; filePosition < contentLength; i++) {
-                // Last part can be less than 5 MB. Adjust part size.
-            	partSize = Math.min(partSize, (contentLength - filePosition));
-            	
-                // Create request to upload a part.
-                UploadPartRequest uploadRequest = new UploadPartRequest()
-                    .withBucketName(existingBucketName).withKey(keyName)
-                    .withUploadId(initResponse.getUploadId()).withPartNumber(i)
-                    .withFileOffset(filePosition)
-                    .withFile(file)
-                    .withPartSize(partSize);
+    public static void UploadFile(FileItem itemFile, String uuidValue) throws IOException {
 
-                // Upload part and add response to our list.
-                partETags.add(
-                		s3Client.uploadPart(uploadRequest).getPartETag());
+        if (itemFile != null) {
+            // get item inputstream to upload file into s3 aws
+            BasicAWSCredentials awsCredentials = new BasicAWSCredentials(AMAZON_ACCESS_KEY, AMAZON_SECRET_KEY);
 
-                filePosition += partSize;
+            AmazonS3 s3client = new AmazonS3Client(awsCredentials);
+
+            try {
+                ObjectMetadata om = new ObjectMetadata();
+                om.setContentLength(itemFile.getSize());
+                String ext = FilenameUtils.getExtension(itemFile.getName());
+                String keyName = uuidValue + '.' + ext;
+
+                s3client.putObject(new PutObjectRequest(S3_BUCKET_NAME, keyName, itemFile.getInputStream(), om));
+                s3client.setObjectAcl(S3_BUCKET_NAME, keyName, CannedAccessControlList.PublicRead);
+
+            } catch (AmazonServiceException ase) {
+                LOGGER.error(uuidValue + ":error:" + ase.getMessage());
+
+            } catch (AmazonClientException ace) {
+                LOGGER.error(uuidValue + ":error:" + ace.getMessage());
             }
 
-            // Step 3: Complete.
-            CompleteMultipartUploadRequest compRequest = new 
-                         CompleteMultipartUploadRequest(
-                                    existingBucketName, 
-                                    keyName, 
-                                    initResponse.getUploadId(), 
-                                    partETags);
-
-            s3Client.completeMultipartUpload(compRequest);
-        } catch (Exception e) {
-            s3Client.abortMultipartUpload(new AbortMultipartUploadRequest(
-                    existingBucketName, keyName, initResponse.getUploadId()));
+        } else {
+            LOGGER.error(uuidValue + ":error:" + "No Upload file");
         }
     }
 }
