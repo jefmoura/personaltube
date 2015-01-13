@@ -8,6 +8,14 @@
         <servlet-name>ServletMediaPlayer</servlet-name>
         <servlet-class>servlet.ServletMediaPlayer</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletTranscode</servlet-name>
+        <servlet-class>servlet.ServletTranscode</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TranscodeListener</servlet-name>
+        <servlet-class>servlet.TranscodeListener</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletIndex</servlet-name>
         <url-pattern>/servletindex.do</url-pattern>
@@ -16,9 +24,17 @@
         <servlet-name>ServletMediaPlayer</servlet-name>
         <url-pattern>/servletmediaplayer.do</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletTranscode</servlet-name>
+        <url-pattern>/servlettranscode.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TranscodeListener</servlet-name>
+        <url-pattern>/transcodelistener.do</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+            60
         </session-timeout>
     </session-config>
     <welcome-file-list>
