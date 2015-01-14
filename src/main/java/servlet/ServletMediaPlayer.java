@@ -16,7 +16,7 @@ public class ServletMediaPlayer extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-		request.setAttribute("transcode", true);
+	request.setAttribute("transcode", true);
         request.getRequestDispatcher("index.jsp" ).forward(request, response);
     }
 
