@@ -19,7 +19,7 @@
         <table>
             <tr>
                 <td>
-                    <form method="post" action="servletmediaplayer.do">
+                    <form method="post" action="servletbackindex.do">
                         <input type="submit" value="Back" />
                     </form>
                 </td>

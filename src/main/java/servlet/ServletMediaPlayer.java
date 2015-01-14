@@ -1,23 +1,36 @@
 package servlet;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 
 /**
  *
  * @author jeferson
  */
-public class ServletMediaPlayer extends HttpServlet {
+public class TranscodeListener extends HttpServlet {
+
+    private static final Logger LOGGER = LogManager.getLogger(ServletIndex.class);
+
+    public TranscodeListener() {
+        super();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-	request.setAttribute("transcode", true);
-        request.getRequestDispatcher("index.jsp" ).forward(request, response);
+        String uuidValue = (String) request.getSession(false).getAttribute("uuidValue");
+        String videoMP4 = "https://s3.amazonaws.com/sandboxencoded/" + uuidValue + ".mp4";
+        request.setAttribute("videoMP4", videoMP4);
+        request.getRequestDispatcher("mediaPlayer.jsp").forward(request, response);
     }
 
     @Override

@@ -48,7 +48,7 @@
         <%
             if ((transcode != null) && (transcode == true)) {
         %>
-        <form method="post" action="servletbackindex.do">
+        <form method="post" action="servletmediaplayer.do">
             <table>
                 <tr>
                     <td><h2>Now you can play your video!</h2></td>
