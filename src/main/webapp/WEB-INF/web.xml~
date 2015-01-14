@@ -13,8 +13,8 @@
         <servlet-class>servlet.ServletTranscode</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ServletBackToIndex</servlet-name>
-        <servlet-class>servlet.ServletBackToIndex</servlet-class>
+        <servlet-name>TranscodeListener</servlet-name>
+        <servlet-class>servlet.TranscodeListener</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletIndex</servlet-name>
@@ -29,12 +29,9 @@
         <url-pattern>/servlettranscode.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ServletBackToIndex</servlet-name>
-        <url-pattern>/servletbackindex.do</url-pattern>
+        <servlet-name>TranscodeListener</servlet-name>
+        <url-pattern>/transcodelistener.do</url-pattern>
     </servlet-mapping>
-    <listener>
-        <listener-class>listener.AppContextListener</listener-class>
-    </listener>
     <session-config>
         <session-timeout>
             120

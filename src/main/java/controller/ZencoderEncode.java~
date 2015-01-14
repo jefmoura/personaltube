@@ -16,7 +16,7 @@ import java.util.List;
 public class ZencoderEncode {
 
     public static void EncodeVideo(String filename, String ext) throws ZencoderClientException {
-        ZencoderClient client = new ZencoderClient("API_KEY");
+        ZencoderClient client = new ZencoderClient("70845e01f5faa050fde8408b0c8e079d");
 
         ZencoderCreateJobRequest job = new ZencoderCreateJobRequest();
         job.setInput("s3://sandboxoriginal/" + filename + "." + ext);

@@ -4,6 +4,9 @@
     Author     : jeferson
 --%>
 
+<%@page import="model.bean.Video"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     Boolean transcode = (Boolean) request.getAttribute("transcode");
@@ -29,6 +32,12 @@
                 document.getElementById("disablingDiv").style.display = 'block';
                 document.getElementById("disablingDiv").innerHTML = '<center><div style="margin-top:20%;"><font color="white"><b>Wait! Sending File.</b></font></div></center>';
             }
+            <%
+                if (transcode != null) {%>
+            document.getElementById("refresh").submit();
+            <%
+                }
+            %>
         </script>
         <div id="disablingDiv"></div>
     <center>
@@ -41,26 +50,46 @@
                     <td><input type="file" name="uploadFile" /></td>
                 </tr>
                 <tr>
-                    <td><input type="submit" value="Upload" onclick="disablePage()"/></td>
+                    <td><textarea rows="4" cols="50" name="description"></textarea></td>
+                </tr>
+                <tr>
+                    <td><input type="submit" id="upload" value="Upload" onclick="disablePage()"/></td>
                 </tr>
             </table>
         </form>
-        <%
-            if ((transcode != null) && (transcode == true)) {
-        %>
-        <form method="post" action="transcodelistener.do">
+        <form method="get" action="servletindex.do">
             <table>
                 <tr>
-                    <td><h2>Now you can play your video!</h2></td>
-                </tr>
-                <tr>
-                    <td><input type="submit" value="Play Video"/></td>
+                    <td><input type="submit" id="refresh" value="Refresh"/></td>
                 </tr>
             </table>
         </form>
         <%
+            List<Video> videos = new ArrayList();
+            if ((List<Video>) getServletContext().getAttribute("videos") != null) {
+                videos = (List<Video>) getServletContext().getAttribute("videos");
+                getServletContext().setAttribute("videos", null);
+            } else {
+                videos = (List<Video>) request.getAttribute("videosAtt");
             }
+            if(!videos.isEmpty()){
         %>
+        <form method="post" action="servletmediaplayer.do">
+            <table>
+                <%for (Video v : videos) {%>
+                <tr>
+                <img src="<%="https://s3.amazonaws.com/sandboxencoded/" + v.getName() + "_0000.png"%>" width="350" height="200"/>
+                </tr>
+                <tr>
+                <p><%= v.getDescription()%></p>
+                </tr>
+                <tr>
+                    <td><input type="submit" name="<%= v.getName()%>" value="Play Video"/></td>
+                </tr>
+                <%}%>
+            </table>
+        </form>
+            <%}%>
     </center>
 </body>
 </html>
