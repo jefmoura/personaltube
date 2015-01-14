@@ -10,11 +10,11 @@ import javax.servlet.http.*;
  *
  * @author jeferson
  */
-public class TranscodeListener extends HttpServlet {
+public class ServletMediaPlayer extends HttpServlet {
 
     private static final Logger LOGGER = LogManager.getLogger(ServletIndex.class);
 
-    public TranscodeListener() {
+    public ServletMediaPlayer() {
         super();
     }
 

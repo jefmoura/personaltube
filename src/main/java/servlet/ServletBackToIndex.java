@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author jeferson
  */
-public class ServletMediaPlayer extends HttpServlet {
+public class ServletBackToIndex extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
